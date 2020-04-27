@@ -16,6 +16,12 @@ features = ['derive']
 package = 'parity-scale-codec'
 version = '1.3.0'
 
+[dependencies.collective]
+git = 'https://github.com/paritytech/substrate.git'
+default-features = false
+package = 'pallet-collective'
+tag = 'v2.0.0-alpha.7'
+
 [dependencies.frame-executive]
 git = 'https://github.com/paritytech/substrate.git'
 default-features = false
@@ -160,6 +166,7 @@ std = [
     'frame-executive/std',
     'frame-support/std',
     'grandpa/std',
+    "collective/std",
     'randomness-collective-flip/std',
     'serde',
     'sp-api/std',
