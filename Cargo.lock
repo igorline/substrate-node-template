@@ -2547,6 +2547,7 @@ dependencies = [
  "pallet-aura",
  "pallet-balances",
  "pallet-collective",
+ "pallet-elections-phragmen",
  "pallet-grandpa",
  "pallet-randomness-collective-flip",
  "pallet-sudo",
@@ -2761,6 +2762,20 @@ dependencies = [
  "serde",
  "sp-core",
  "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-elections-phragmen"
+version = "2.0.0-alpha.7"
+source = "git+https://github.com/paritytech/substrate.git?tag=v2.0.0-alpha.7#83a6f1add7957160283ac5d7e627da06beb725d9"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "parity-scale-codec",
+ "serde",
+ "sp-phragmen",
  "sp-runtime",
  "sp-std",
 ]
@@ -5075,6 +5090,29 @@ source = "git+https://github.com/paritytech/substrate.git?tag=v2.0.0-alpha.7#83a
 dependencies = [
  "backtrace",
  "log",
+]
+
+[[package]]
+name = "sp-phragmen"
+version = "2.0.0-alpha.7"
+source = "git+https://github.com/paritytech/substrate.git?tag=v2.0.0-alpha.7#83a6f1add7957160283ac5d7e627da06beb725d9"
+dependencies = [
+ "parity-scale-codec",
+ "serde",
+ "sp-arithmetic",
+ "sp-phragmen-compact",
+ "sp-std",
+]
+
+[[package]]
+name = "sp-phragmen-compact"
+version = "2.0.0-alpha.7"
+source = "git+https://github.com/paritytech/substrate.git?tag=v2.0.0-alpha.7#83a6f1add7957160283ac5d7e627da06beb725d9"
+dependencies = [
+ "proc-macro-crate",
+ "proc-macro2",
+ "quote 1.0.4",
+ "syn 1.0.18",
 ]
 
 [[package]]

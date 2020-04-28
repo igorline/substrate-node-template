@@ -150,6 +150,11 @@ default-features = false
 package = 'pallet-treasury'
 tag = 'v2.0.0-alpha.7'
 
+[dependencies.elections-phragmen]
+git = 'https://github.com/paritytech/substrate.git'
+default-features = false
+package="pallet-elections-phragmen"
+tag = "v2.0.0-alpha.7"
 
 [build-dependencies.wasm-builder-runner]
 git = 'https://github.com/paritytech/substrate.git'
@@ -174,6 +179,7 @@ std = [
     'aura/std',
     'balances/std',
     'codec/std',
+    'elections-phragmen/std',
     'frame-executive/std',
     'frame-support/std',
     'grandpa/std',

@@ -37,12 +37,16 @@ pub use balances::Call as BalancesCall;
 pub use sp_runtime::{Permill, Perbill, Percent};
 pub use frame_support::{
 	StorageValue, construct_runtime, parameter_types,
-	traits::Randomness,
+	traits::{Randomness, LockIdentifier},
 	weights::{
 		Weight,
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
 	},
 };
+
+/// Implementations of some helper traits passed into runtime modules as associated types.
+pub mod impls;
+use impls::CurrencyToVoteHandler;
 
 /// Constant values used within the runtime.
 pub mod constants;
@@ -173,6 +177,34 @@ impl grandpa::Trait for Runtime {
 }
 
 parameter_types! {
+    pub const CandidacyBond: Balance = 10 * DOLLARS;
+    pub const VotingBond: Balance = 1 * DOLLARS;
+    pub const TermDuration: BlockNumber = 7 * MINUTES;
+    pub const DesiredMembers: u32 = 13;
+    pub const DesiredRunnersUp: u32 = 7;
+    pub const ElectionsPhragmenModuleId: LockIdentifier = *b"phrelect";
+}
+
+impl elections_phragmen::Trait for Runtime {
+    type ModuleId = ElectionsPhragmenModuleId;
+    type Event = Event;
+    type Currency = Balances;
+    type ChangeMembers = Council;
+    // NOTE: this implies that council's genesis members cannot be set directly and must come from
+    // this module.
+    type InitializeMembers = Council;
+    type CurrencyToVote = CurrencyToVoteHandler;
+    type CandidacyBond = CandidacyBond;
+    type VotingBond = VotingBond;
+    type LoserCandidate = ();
+    type BadReport = ();
+    type KickedMember = ();
+    type DesiredMembers = DesiredMembers;
+    type DesiredRunnersUp = DesiredRunnersUp;
+    type TermDuration = TermDuration;
+}
+
+parameter_types! {
     pub const CouncilMotionDuration: BlockNumber = 5 * DAYS;
 }
 
@@ -289,7 +321,8 @@ construct_runtime!(
 		// Used for the module template in `./template.rs`
 		TemplateModule: template::{Module, Call, Storage, Event<T>},
 		Treasury: treasury::{Module, Call, Storage, Config, Event<T>},
-		Council: collective::<Instance1>::{Module, Call, Storage, Origin<T>, Event<T>, Config<T>},
+                Council: collective::<Instance1>::{Module, Call, Storage, Origin<T>, Event<T>, Config<T>},
+		Elections: elections_phragmen::{Module, Call, Storage, Event<T>},
 	}
 );
 
