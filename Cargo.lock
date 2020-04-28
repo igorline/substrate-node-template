@@ -2499,11 +2499,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "node-primitives"
+version = "1.0.0"
+dependencies = [
+ "sp-application-crypto",
+ "sp-core",
+ "sp-runtime",
+]
+
+[[package]]
 name = "node-template"
 version = "2.0.0-alpha.7"
 dependencies = [
  "futures 0.3.4",
  "log",
+ "node-primitives",
  "node-template-runtime",
  "sc-basic-authorship",
  "sc-cli",
@@ -2533,6 +2543,7 @@ dependencies = [
  "frame-executive",
  "frame-support",
  "frame-system",
+ "node-primitives",
  "pallet-aura",
  "pallet-balances",
  "pallet-collective",

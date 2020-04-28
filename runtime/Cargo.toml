@@ -38,6 +38,10 @@ default-features = false
 package = 'pallet-grandpa'
 tag = 'v2.0.0-alpha.7'
 
+[dependencies.node-primitives]
+default-features = false
+path="../primitives"
+
 [dependencies.randomness-collective-flip]
 git = 'https://github.com/paritytech/substrate.git'
 default-features = false

@@ -1,10 +1,11 @@
 use sp_core::{Pair, Public, sr25519};
 use node_template_runtime::{
-	AccountId, AuraConfig, BalancesConfig, CouncilConfig, GenesisConfig, GrandpaConfig,
-	SudoConfig, SystemConfig, WASM_BINARY, Signature
+	AuraConfig, BalancesConfig, CouncilConfig, GenesisConfig, GrandpaConfig,
+	SudoConfig, SystemConfig, WASM_BINARY
 };
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_finality_grandpa::AuthorityId as GrandpaId;
+use node_primitives::{AccountId, Signature};
 use sp_runtime::traits::{Verify, IdentifyAccount};
 use sc_service::ChainType;
 

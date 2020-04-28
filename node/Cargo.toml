@@ -103,5 +103,8 @@ tag = 'v2.0.0-alpha.7'
 git = 'https://github.com/paritytech/substrate.git'
 tag = 'v2.0.0-alpha.7'
 
+[dependencies.node-primitives]
+path = "../primitives"
+
 [[bin]]
 name = 'node-template'
