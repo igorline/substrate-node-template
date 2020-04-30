@@ -322,7 +322,7 @@ construct_runtime!(
 		TemplateModule: template::{Module, Call, Storage, Event<T>},
 		Treasury: treasury::{Module, Call, Storage, Config, Event<T>},
                 Council: collective::<Instance1>::{Module, Call, Storage, Origin<T>, Event<T>, Config<T>},
-		Elections: elections_phragmen::{Module, Call, Storage, Event<T>},
+		Elections: elections_phragmen::{Module, Call, Storage, Config<T>, Event<T>},
 	}
 );
 
