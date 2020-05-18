@@ -12,15 +12,17 @@ use sp_std::prelude::*;
 use sp_core::OpaqueMetadata;
 use sp_runtime::{
 	ApplyExtrinsicResult, generic, create_runtime_str, impl_opaque_keys, MultiSignature,
-	transaction_validity::{TransactionValidity, TransactionSource},
+	transaction_validity::{TransactionValidity, TransactionSource}, ModuleId
 };
 use sp_runtime::traits::{
 	BlakeTwo256, Block as BlockT, IdentityLookup, Verify, ConvertInto, IdentifyAccount
 };
+use sp_core::u32_trait::{_2, _4};
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use grandpa::AuthorityList as GrandpaAuthorityList;
 use grandpa::fg_primitives;
+use frame_support::traits::{Contains, ContainsLengthBound};
 use sp_version::RuntimeVersion;
 #[cfg(feature = "std")]
 use sp_version::NativeVersion;
@@ -30,7 +32,7 @@ use sp_version::NativeVersion;
 pub use sp_runtime::BuildStorage;
 pub use timestamp::Call as TimestampCall;
 pub use balances::Call as BalancesCall;
-pub use sp_runtime::{Permill, Perbill};
+pub use sp_runtime::{Permill, Perbill, Percent};
 pub use frame_support::{
 	StorageValue, construct_runtime, parameter_types,
 	traits::Randomness,
@@ -239,6 +241,47 @@ impl transaction_payment::Trait for Runtime {
 	type FeeMultiplierUpdate = ();
 }
 
+parameter_types! {
+    pub const ProposalBond: Permill = Permill::from_percent(5);
+    pub const ProposalBondMinimum: Balance = 1_000;
+    pub const SpendPeriod: BlockNumber = 7 * DAYS;
+    pub const Burn: Permill = Permill::from_percent(0);
+    pub const TipCountdown: BlockNumber = 1 * DAYS;
+    pub const TipFindersFee: Percent = Percent::from_percent(20);
+    pub const TipReportDepositBase: Balance = 1;
+    pub const TipReportDepositPerByte: Balance = 1;
+    pub const TreasuryModuleId: ModuleId = ModuleId(*b"py/trsry");
+}
+
+pub struct Nobody;
+impl Contains<AccountId> for Nobody {
+    fn contains(_: &AccountId) -> bool { false }
+    fn sorted_members() -> Vec<AccountId> { vec![] }
+}
+
+impl ContainsLengthBound for Nobody {
+    fn min_len() -> usize { 0 }
+    fn max_len() -> usize { 0 }
+}
+
+impl treasury::Trait for Runtime {
+    type Currency = Balances;
+    type ApproveOrigin = collective::EnsureMembers<_4, AccountId, CouncilCollective>;
+    type RejectOrigin = collective::EnsureMembers<_2, AccountId, CouncilCollective>;
+    type Tippers = Nobody;
+    type TipCountdown = TipCountdown;
+    type TipFindersFee = TipFindersFee;
+    type TipReportDepositBase = TipReportDepositBase;
+    type TipReportDepositPerByte = TipReportDepositPerByte;
+    type Event = Event;
+    type ProposalRejection = ();
+    type ProposalBond = ProposalBond;
+    type ProposalBondMinimum = ProposalBondMinimum;
+    type SpendPeriod = SpendPeriod;
+    type Burn = Burn;
+    type ModuleId = TreasuryModuleId;
+}
+
 impl sudo::Trait for Runtime {
 	type Event = Event;
 	type Call = Call;
@@ -265,6 +308,7 @@ construct_runtime!(
 		Sudo: sudo::{Module, Call, Config<T>, Storage, Event<T>},
 		// Used for the module template in `./template.rs`
 		TemplateModule: template::{Module, Call, Storage, Event<T>},
+		Treasury: treasury::{Module, Call, Storage, Config, Event<T>},
 		Council: collective::<Instance1>::{Module, Call, Storage, Origin<T>, Event<T>, Config<T>},
 	}
 );

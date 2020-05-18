@@ -140,6 +140,12 @@ default-features = false
 package = 'pallet-transaction-payment'
 tag = 'v2.0.0-alpha.7'
 
+[dependencies.treasury]
+git = 'https://github.com/paritytech/substrate.git'
+default-features = false
+package = 'pallet-treasury'
+tag = 'v2.0.0-alpha.7'
+
 [build-dependencies.wasm-builder-runner]
 git = 'https://github.com/paritytech/substrate.git'
 package = 'substrate-wasm-builder-runner'
@@ -185,5 +191,6 @@ std = [
     'system/std',
     'timestamp/std',
     'transaction-payment/std',
+    'treasury/std',
     'template/std',
 ]

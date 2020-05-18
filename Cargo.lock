@@ -2542,6 +2542,7 @@ dependencies = [
  "pallet-template",
  "pallet-timestamp",
  "pallet-transaction-payment",
+ "pallet-treasury",
  "parity-scale-codec",
  "serde",
  "sp-api",
@@ -2883,6 +2884,20 @@ dependencies = [
  "parity-scale-codec",
  "serde",
  "sp-api",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-treasury"
+version = "2.0.0-alpha.7"
+source = "git+https://github.com/paritytech/substrate.git?tag=v2.0.0-alpha.7#83a6f1add7957160283ac5d7e627da06beb725d9"
+dependencies = [
+ "frame-support",
+ "frame-system",
+ "pallet-balances",
+ "parity-scale-codec",
+ "serde",
  "sp-runtime",
  "sp-std",
 ]
