@@ -18,6 +18,7 @@ use sp_runtime::traits::{
 	BlakeTwo256, Block as BlockT, IdentityLookup, Verify, ConvertInto, IdentifyAccount
 };
 use node_primitives::{BlockNumber, Signature, AccountId, Balance, Index, Hash};
+use constants::currency::*;
 use sp_core::u32_trait::{_2, _4};
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
@@ -42,6 +43,10 @@ pub use frame_support::{
 		constants::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight, WEIGHT_PER_SECOND},
 	},
 };
+
+/// Constant values used within the runtime.
+pub mod constants;
+use constants::{currency::*};
 
 /// Importing a template pallet
 pub use template;
@@ -218,13 +223,13 @@ impl transaction_payment::Trait for Runtime {
 
 parameter_types! {
     pub const ProposalBond: Permill = Permill::from_percent(5);
-    pub const ProposalBondMinimum: Balance = 1_000;
+    pub const ProposalBondMinimum: Balance = 1_000 * DOLLARS;
     pub const SpendPeriod: BlockNumber = 7 * DAYS;
     pub const Burn: Permill = Permill::from_percent(0);
     pub const TipCountdown: BlockNumber = 1 * DAYS;
     pub const TipFindersFee: Percent = Percent::from_percent(20);
-    pub const TipReportDepositBase: Balance = 1;
-    pub const TipReportDepositPerByte: Balance = 1;
+    pub const TipReportDepositBase: Balance = 1 * DOLLARS;
+    pub const TipReportDepositPerByte: Balance = 1 * DOLLARS;
     pub const TreasuryModuleId: ModuleId = ModuleId(*b"py/trsry");
 }
 
