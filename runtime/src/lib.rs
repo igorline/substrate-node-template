@@ -276,22 +276,11 @@ parameter_types! {
     pub const TreasuryModuleId: ModuleId = ModuleId(*b"py/trsry");
 }
 
-pub struct Nobody;
-impl Contains<AccountId> for Nobody {
-    fn contains(_: &AccountId) -> bool { false }
-    fn sorted_members() -> Vec<AccountId> { vec![] }
-}
-
-impl ContainsLengthBound for Nobody {
-    fn min_len() -> usize { 0 }
-    fn max_len() -> usize { 0 }
-}
-
 impl treasury::Trait for Runtime {
     type Currency = Balances;
     type ApproveOrigin = collective::EnsureMembers<_4, AccountId, CouncilCollective>;
     type RejectOrigin = collective::EnsureMembers<_2, AccountId, CouncilCollective>;
-    type Tippers = Nobody;
+    type Tippers = Elections;
     type TipCountdown = TipCountdown;
     type TipFindersFee = TipFindersFee;
     type TipReportDepositBase = TipReportDepositBase;
