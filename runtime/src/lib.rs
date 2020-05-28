@@ -19,7 +19,7 @@ use sp_runtime::traits::{
 };
 use node_primitives::{BlockNumber, Signature, AccountId, Balance, Index, Hash};
 use constants::currency::*;
-use sp_core::u32_trait::{_2, _4};
+use sp_core::u32_trait::{_1, _2, _3, _4, _5};
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use grandpa::AuthorityList as GrandpaAuthorityList;
@@ -216,7 +216,7 @@ impl elections_phragmen::Trait for Runtime {
 }
 
 parameter_types! {
-    pub const CouncilMotionDuration: BlockNumber = 5 * DAYS;
+    pub const CouncilMotionDuration: BlockNumber = 5 * MINUTES;
 }
 
 type CouncilCollective = collective::Instance1;
@@ -266,10 +266,10 @@ impl transaction_payment::Trait for Runtime {
 
 parameter_types! {
     pub const ProposalBond: Permill = Permill::from_percent(5);
-    pub const ProposalBondMinimum: Balance = 1_000 * DOLLARS;
+    pub const ProposalBondMinimum: Balance = 10 * DOLLARS;
     pub const SpendPeriod: BlockNumber = 7 * MINUTES;
     pub const Burn: Permill = Permill::from_percent(0);
-    pub const TipCountdown: BlockNumber = 1 * DAYS;
+    pub const TipCountdown: BlockNumber = 5 * MINUTES;
     pub const TipFindersFee: Percent = Percent::from_percent(20);
     pub const TipReportDepositBase: Balance = 1 * DOLLARS;
     pub const TipReportDepositPerByte: Balance = 1 * DOLLARS;
@@ -278,8 +278,8 @@ parameter_types! {
 
 impl treasury::Trait for Runtime {
     type Currency = Balances;
-    type ApproveOrigin = collective::EnsureMembers<_4, AccountId, CouncilCollective>;
-    type RejectOrigin = collective::EnsureMembers<_2, AccountId, CouncilCollective>;
+    type ApproveOrigin = collective::EnsureProportionAtLeast<_3, _5, AccountId, CouncilCollective>;
+    type RejectOrigin = collective::EnsureProportionMoreThan<_1, _2, AccountId, CouncilCollective>;
     type Tippers = Elections;
     type TipCountdown = TipCountdown;
     type TipFindersFee = TipFindersFee;
