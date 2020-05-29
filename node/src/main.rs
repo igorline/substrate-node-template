@@ -2,6 +2,7 @@
 #![warn(missing_docs)]
 
 mod chain_spec;
+mod members_config;
 #[macro_use]
 mod service;
 mod cli;

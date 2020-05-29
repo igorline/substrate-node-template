@@ -1,4 +1,5 @@
 use sp_core::{Pair, Public, sr25519};
+use sp_core::crypto::{AccountId32, Ss58Codec};
 use node_template_runtime::{
 	AuraConfig, BalancesConfig, CouncilConfig, ElectionsConfig,
         GenesisConfig, GrandpaConfig, SudoConfig, SystemConfig, WASM_BINARY
@@ -9,6 +10,7 @@ use node_primitives::{AccountId, Balance, Signature};
 use node_template_runtime::constants::currency::*;
 use sp_runtime::traits::{Verify, IdentifyAccount};
 use sc_service::ChainType;
+use crate::members_config::initial_members;
 
 // Note this is the URL for the telemetry server
 //const STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
@@ -52,17 +54,7 @@ pub fn development_config() -> ChainSpec {
 			get_account_id_from_seed::<sr25519::Public>("Alice"),
 			vec![
 				get_account_id_from_seed::<sr25519::Public>("Alice"),
-				get_account_id_from_seed::<sr25519::Public>("Bob"),
-				get_account_id_from_seed::<sr25519::Public>("Charlie"),
-				get_account_id_from_seed::<sr25519::Public>("Dave"),
-				get_account_id_from_seed::<sr25519::Public>("Eve"),
-				get_account_id_from_seed::<sr25519::Public>("Ferdie"),
 				get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
-				get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
-				get_account_id_from_seed::<sr25519::Public>("Charlie//stash"),
-				get_account_id_from_seed::<sr25519::Public>("Dave//stash"),
-				get_account_id_from_seed::<sr25519::Public>("Eve//stash"),
-				get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
 			],
 			true,
 		),
@@ -118,6 +110,8 @@ fn testnet_genesis(initial_authorities: Vec<(AuraId, GrandpaId)>,
 	const ENDOWMENT: Balance = 10_000 * DOLLARS;
 	const STASH: Balance = 100 * DOLLARS;
 
+        let endowed_accounts = initial_members();
+
 	GenesisConfig {
 		system: Some(SystemConfig {
 			code: WASM_BINARY.to_vec(),
@@ -136,7 +130,7 @@ fn testnet_genesis(initial_authorities: Vec<(AuraId, GrandpaId)>,
 		}),
 		elections_phragmen: Some(ElectionsConfig {
 			members: endowed_accounts.iter()
-						.take((num_endowed_accounts + 1) / 2)
+						.take(1)
 						.cloned()
 						.map(|member| (member, STASH))
 						.collect(),
