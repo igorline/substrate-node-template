@@ -253,7 +253,7 @@ impl balances::Trait for Runtime {
 }
 
 parameter_types! {
-	pub const TransactionByteFee: Balance = 10 * MILLICENTS;
+	pub const TransactionByteFee: Balance = 10 * CENTS;
 }
 
 impl transaction_payment::Trait for Runtime {
@@ -272,7 +272,7 @@ parameter_types! {
     pub const TipCountdown: BlockNumber = 5 * MINUTES;
     pub const TipFindersFee: Percent = Percent::from_percent(20);
     pub const TipReportDepositBase: Balance = 1 * DOLLARS;
-    pub const TipReportDepositPerByte: Balance = 1 * DOLLARS;
+    pub const TipReportDepositPerByte: Balance = 10 * CENTS;
     pub const TreasuryModuleId: ModuleId = ModuleId(*b"py/trsry");
 }
 

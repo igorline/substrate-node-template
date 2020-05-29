@@ -11,6 +11,7 @@ use node_template_runtime::constants::currency::*;
 use sp_runtime::traits::{Verify, IdentifyAccount};
 use sc_service::ChainType;
 use crate::members_config::initial_members;
+use serde_json as json;
 
 // Note this is the URL for the telemetry server
 //const STAGING_TELEMETRY_URL: &str = "wss://telemetry.polkadot.io/submit/";
@@ -42,6 +43,15 @@ pub fn authority_keys_from_seed(s: &str) -> (AuraId, GrandpaId) {
 	)
 }
 
+pub fn chain_spec_properties() -> json::map::Map<String, json::Value> {
+    let mut properties: json::map::Map<String, json::Value> = json::map::Map::new();
+    properties.insert(
+        String::from("tokenSymbol"),
+        json::Value::String(String::from("USD")),
+    );
+    properties
+}
+
 pub fn development_config() -> ChainSpec {
 	ChainSpec::from_genesis(
 		"Development",
@@ -61,7 +71,7 @@ pub fn development_config() -> ChainSpec {
 		vec![],
 		None,
 		None,
-		None,
+                Some(chain_spec_properties()),
 		None,
 	)
 }
@@ -108,7 +118,7 @@ fn testnet_genesis(initial_authorities: Vec<(AuraId, GrandpaId)>,
 	let num_endowed_accounts = endowed_accounts.len();
 
 	const ENDOWMENT: Balance = 10_000 * DOLLARS;
-	const STASH: Balance = 100 * DOLLARS;
+	const STASH: Balance = 1_000 * DOLLARS;
 
         let endowed_accounts = initial_members();
 
