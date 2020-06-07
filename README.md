@@ -1,4 +1,6 @@
-# Substrate Node Template
+# Substrate Node for Polkadot Treasury demo
+
+*Find demo notes in [polkadot-treasury-demo](polkadot-treasury-demo.md).*
 
 A new Substrate node, ready for hacking. This node includes:
 
@@ -20,6 +22,14 @@ Initialize your Wasm Build environment:
 ```bash
 ./scripts/init.sh
 ```
+
+Add participants addresses to `user_accounts.json` in root folder:
+```json
+[
+  {"address": "5EYCAe5ijiYfyeZ2JJCGq56LmPyNRAKzpG4QkoQkkQNB5e6Z"}
+]
+```
+
 
 Build Wasm and native code:
 
